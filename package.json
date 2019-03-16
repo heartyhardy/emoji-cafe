@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "start-dev": "cross-env FILE_DB_PATH=\\data\\db.txt REPO_TYPE=FILE nodemon server.js"
+    "start-dev": "cross-env FILE_DB_PATH=\\data\\db REPO_TYPE=FILE nodemon server.js"
   },
   "author": "Charith Rathnayake",
   "license": "ISC",

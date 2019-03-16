@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 const AddNewProduct = (req, res, next) => {
     res
@@ -16,7 +17,7 @@ const SaveNewProduct = (req, res, next) => {
         req.body.product_img
     )
 
-    new_product.save(result=>console.log);
+    new_product.save(isSaved=>console.log(isSaved));
 
     res
         .status(200)
@@ -30,6 +31,13 @@ const AddNewCategory = (req, res, next) => {
 }
 
 const SaveNewCategory = (req, res, next) => {
+
+    const new_category = new Category(
+        req.body.category_name
+    )
+
+    new_category.save(isSaved => console.log(isSaved));
+
     res
         .status(200)
         .redirect('/');

@@ -19,7 +19,7 @@ app.use(express.static('public'));
 app.use(parser.urlencoded({extended:false}));
 app.use(shop_route.router);
 app.use('/admin', admin_route.router);
-app.use(user_route.router);
+app.use('/user', user_route.router);
 app.use(PageNotFoundError);
 
 // const val = require('./util/validation');

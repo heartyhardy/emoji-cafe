@@ -10,7 +10,7 @@ block contents
             form(action="/admin/save-category", method="post")
                 .add-category-form
                     label(for="category_name" class="form_label") Category
-                    input(type="text", name="category_name", class="form-field")
+                    input(type="text", name="category_name", class="form-field", required)
                     .form-actions
                         button(type="submit" name="btnSubmit" class="form-button") Save
                         button(type="button" name="btnCancel" class="form-button") Cancel

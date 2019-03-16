@@ -1,5 +1,6 @@
 const uuid1 = require('uuid/v1');
 
+const { getRepository } = require('../util/repository-config');
 const { isValidCategory } = require('../util/validation');
 
 module.exports = class Category{
@@ -31,12 +32,15 @@ module.exports = class Category{
         {
             const {isValid,...save_obj} = this;
 
+            getRepository().save_category(save_obj, (result) => {
+                isSaved(result);
+            })
         }
         else throw "Cannot save: Invalid category";
     }
 
     static fetch(categories)
     {
-        
+
     }
 }

@@ -1,4 +1,20 @@
 extends ../layouts/main-layout.pug
 
+block styles
+    link(rel="stylesheet", href="/css/main.css.css")
+    link(rel="stylesheet", href="/css/new-user.css")
+
 block contents
-    h1 User registration
+    main.main-container
+        .register-user-form-container
+            form(action="/user/complete-registration", method="post")
+                .register-user-form
+                    label(for="user_email", class="form_label") Email
+                    input(type="text", name="user_email", class="form-field", required)
+
+                    label(for="user_password", class="form_label") Password
+                    input(type="password", name="user_password", class="form-field", required)
+
+                    .form-actions
+                        button(type="submit" name="btnSubmit" class="form-button") Save
+                        button(type="button" name="btnCancel" class="form-button") Cancel
