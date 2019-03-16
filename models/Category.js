@@ -41,6 +41,8 @@ module.exports = class Category{
 
     static fetch(categories)
     {
-
+        getRepository().get_all_categories((result) => {
+            categories(result);
+        })
     }
 }

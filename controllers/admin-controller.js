@@ -2,9 +2,21 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const AddNewProduct = (req, res, next) => {
-    res
-        .status(200)
-        .render('admin/new-product', {title: "Add new product"});
+
+    const categories = Category.fetch((categories) => {
+        if(categories.length > 0)
+        {
+            res
+            .status(200)
+            .render('admin/new-product', {title: "Add new product", categories});
+        }
+        else
+        {
+            res
+            .status(400)
+            .render('error/400', {title: "Bad request"});
+        }
+    })
 }
 
 const SaveNewProduct = (req, res, next) => {

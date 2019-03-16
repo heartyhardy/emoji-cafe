@@ -8,7 +8,7 @@ const isValidProduct = (product, result) => {
     if(
        !_.isNull(isAlphaWithSpaces(product.title)) &&
        !_.isNull(isAlphaNumericExt(product.description)) &&
-       !_.isNull(isNumeric(product.category)) &&
+       !_.isNull(isUUID(product.category)) &&
        !_.isNull(isCurrency(product.price)) &&
        !_.isNull(isSymbol(product.img))
     )
@@ -84,6 +84,14 @@ const isCurrency = (str) => {
 */
 const isNumeric = (str) => {
     const regex = /^\d{0,2}$/g;
+    return str.match(regex);
+}
+
+/*
+    matches uuidv1-v5
+*/
+const isUUID = (str) => {
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/g;
     return str.match(regex);
 }
 

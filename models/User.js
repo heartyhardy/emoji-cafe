@@ -32,8 +32,18 @@ module.exports = class User{
     {
         if(this.isValid)
         {
-            
+            const {isValid,...save_obj} = this;
+            getRepository().save_user(save_obj, (result) => {
+                isSaved(result);
+            })
         }
         else throw "Cannot save: Invalid user registration";
+    }
+
+    static fetch(users)
+    {
+        getRepository().get_all_users((result) => {
+            users(result);
+        })
     }
 }

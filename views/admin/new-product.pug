@@ -22,8 +22,8 @@ block contents
 
                     label(for="product_category", class="form_label") Category
                     select(name="product_category", class="form-field", required)
-                        option(value="0") option1
-                        option(value="1") option2
+                        each category in categories
+                            option(value=category._id) #{category.name}
 
                     label(for="product_price", class="form_label") Unit price
                     input(
