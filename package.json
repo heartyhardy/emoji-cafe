@@ -1,0 +1,24 @@
+{
+  "name": "emoji-cafe",
+  "version": "1.0.0",
+  "description": "Emoji grocery cafe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "start-dev": "cross-env FILE_DB_PATH=\\data\\db.txt REPO_TYPE=FILE nodemon server.js"
+  },
+  "author": "Charith Rathnayake",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "pug": "^2.0.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.18.10"
+  }
+}

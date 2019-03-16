@@ -1,0 +1,61 @@
+.main-container
+{
+    display: flex;
+    background-color: lightblue;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.add-product-form-container
+{
+    height: auto;
+    background-color: lightsalmon;
+    border: 2px solid black;
+    padding: 2rem;
+}
+.add-product-form
+{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0.5rem;
+}
+
+.form_label
+{
+    font-family: 'Staatliches', cursive;
+    font-size: 1rem;
+    color:black;
+}
+
+.form-field
+{
+    background-color: ivory;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.25rem 0.1rem 0.25rem;
+    color: black;
+    outline-style: none;
+    user-select: none;
+}
+
+.form-button
+{
+    font-family: 'Unica One', cursive;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: orange;
+    border: 2px solid black;
+    border-radius: 1rem;
+    color: black;
+    outline-style: none;
+}
+
+.form-actions
+{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0.5rem;
+}

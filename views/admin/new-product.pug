@@ -1,0 +1,44 @@
+extends ../layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/new-product.css")
+block contents
+    main.main-container
+        .add-product-form-container
+            form(action="/admin/save-product", method="post")
+                .add-product-form
+                    label(for="product_title", class="form_label lbl_title") Title
+                    input(type="text", name="product_title", class="form-field", required)
+
+                    label(for="product_desc", class="form_label") Description
+                    textarea(
+                        name="product_desc",
+                        cols="30",
+                        rows="5",
+                        maxlength="256",
+                        required class="form-field"
+                        )
+
+                    label(for="product_category", class="form_label") Category
+                    select(name="product_category", class="form-field", required)
+                        option(value="0") option1
+                        option(value="1") option2
+
+                    label(for="product_price", class="form_label") Unit price
+                    input(
+                        type="number",
+                        step="0.01",
+                        min="0.00",
+                        value="0.00",
+                        name="product_price",
+                        class="form-field",
+                        required
+                        )
+
+                    label(for="product_img", class="form_label") Icon
+                    input(type="text", name="product_img", class="form-field" required)
+
+                    .form-actions
+                        button(type="submit" name="btnSubmit" class="form-button") Save
+                        button(type="button" name="btnCancel" class="form-button") Cancel

@@ -1,0 +1,16 @@
+extends ../layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/new-category.css")
+
+block contents
+    main.main-container
+        .add-category-form-container
+            form(action="/admin/save-category", method="post")
+                .add-category-form
+                    label(for="category_name" class="form_label") Category
+                    input(type="text", name="category_name", class="form-field")
+                    .form-actions
+                        button(type="submit" name="btnSubmit" class="form-button") Save
+                        button(type="button" name="btnCancel" class="form-button") Cancel
