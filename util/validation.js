@@ -117,7 +117,7 @@ const isEmail = (str) => {
     - allowed - alphanumeric and underscore.
 */
 const isPassword = (str) => {
-    const regex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,50}$/g;
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,50}$/g;
     return str.match(regex);
 }
 

@@ -1,4 +1,6 @@
 
+const User = require('../models/User');
+
 const ShowUserRegistration = (req, res, next) => {
     res
         .status(200)
@@ -6,9 +8,34 @@ const ShowUserRegistration = (req, res, next) => {
 }
 
 const RegisterUser = (req, res, next) => {
-    res
-        .status(200)
-        .redirect('/');
+
+    try
+    {
+        const new_user = new User(
+            req.body.user_email,
+            req.body.user_password
+        )
+        
+        new_user.save((isSaved) => {
+            if(isSaved.saved)
+            {
+                res
+                    .status(200)
+                    .redirect('/');
+            }
+            else if(!isSaved.saved)
+            {
+                res
+                    .status(400)
+                    .render('error/400', {title:"Bad request"});
+            }
+        })
+    }
+    catch
+    {
+        res.status(400).render('error/400', {title:"Bad request"});
+    } 
+
 }
 module.exports = {
     ShowUserRegistration,

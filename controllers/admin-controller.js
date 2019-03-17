@@ -21,19 +21,35 @@ const AddNewProduct = (req, res, next) => {
 
 const SaveNewProduct = (req, res, next) => {
 
-    const new_product = new Product(
-        req.body.product_title,
-        req.body.product_desc,
-        req.body.product_category,
-        req.body.product_price,
-        req.body.product_img
-    )
+    try
+    {
+        const new_product = new Product(
+            req.body.product_title,
+            req.body.product_desc,
+            req.body.product_category,
+            req.body.product_price,
+            req.body.product_img
+        )
 
-    new_product.save(isSaved=>console.log(isSaved));
-
-    res
-        .status(200)
-        .redirect('/');
+        new_product.save(isSaved=>{
+            if(isSaved.saved)
+            {
+                res
+                    .status(200)
+                    .redirect('/');
+            }
+            else if(!isSaved.saved)
+            {
+                res
+                    .status(400)
+                    .render('error/400', {title:"Bad request"});
+            }
+        });
+    }
+    catch
+    {
+        res.status(400).render('error/400', {title:"Bad request"});
+    }
 }
 
 const AddNewCategory = (req, res, next) => {
@@ -44,15 +60,31 @@ const AddNewCategory = (req, res, next) => {
 
 const SaveNewCategory = (req, res, next) => {
 
-    const new_category = new Category(
-        req.body.category_name
-    )
+    try
+    {
+        const new_category = new Category(
+            req.body.category_name
+        )
 
-    new_category.save(isSaved => console.log(isSaved));
-
-    res
-        .status(200)
-        .redirect('/');
+         new_category.save(isSaved => {
+             if(isSaved.saved)
+             {
+                 res
+                    .status(200)
+                    .redirect('/');
+             }
+             else
+             {
+                 res
+                    .status(400)
+                    .render('error/400', {title:"Bad request"});
+             }
+         });
+    }
+    catch
+    {
+        res.status(400).render('error/400', {title:"Bad request"});
+    }
 }
 
 module.exports = {
