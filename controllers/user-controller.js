@@ -37,7 +37,15 @@ const RegisterUser = (req, res, next) => {
     } 
 
 }
+
+const ShowUserLogin = (req, res, next) => {
+    res
+        .status(200)
+        .render('user/user-login', {title:"Sign in"});
+}
+
 module.exports = {
     ShowUserRegistration,
+    ShowUserLogin,
     RegisterUser
 }

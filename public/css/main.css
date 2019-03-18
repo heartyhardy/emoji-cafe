@@ -2,3 +2,53 @@ body, html{
     margin:0;
     padding:0
 }
+
+.main-header {
+    height: 3.5rem;
+    padding: 0 1.5rem 0 1.5rem;
+    background-color: indigo;
+    color:ivory;
+    box-shadow: 0 0.1rem 0.5rem #11001486;
+}
+
+.main-header-nav
+{   
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.nav-elements
+{
+    padding: 0;
+    margin:0;
+    display: flex;
+    list-style: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+
+}
+
+.nav-element
+{
+    padding: 0 1rem 0 1rem;
+    user-select: none;
+    cursor: pointer;
+}
+
+.nav-link
+{
+    text-decoration: none;
+    color: snow;
+}
+
+.corner
+{
+    margin-left: auto;
+}
+
+.nav-link:active,
+.nav-link.active
+{
+    color: gold;
+}

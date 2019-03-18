@@ -36,7 +36,7 @@ module. exports = class User{
     {
         if(this.isValid)
         {
-            // Omit the validation property through object rest operator
+            // Omit the validation property through object spread operator
             const {isValid,...save_obj} = this;
             getRepository().save_product(save_obj, (result) => {
                 isSaved(result);
