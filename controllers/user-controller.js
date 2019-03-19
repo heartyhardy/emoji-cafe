@@ -44,8 +44,15 @@ const ShowUserLogin = (req, res, next) => {
         .render('user/user-login', {title:"Sign in"});
 }
 
+const SignIn = (req, res, next) => {
+    res
+        .status(200)
+        .redirect('/');
+}
+
 module.exports = {
     ShowUserRegistration,
     ShowUserLogin,
-    RegisterUser
+    RegisterUser,
+    SignIn
 }

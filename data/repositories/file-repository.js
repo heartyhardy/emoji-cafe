@@ -147,12 +147,13 @@ const get_all_users = (result) => {
     })
 }
 
+
 module.exports = {
     save_product,
     save_category,
     save_user,
     get_all_products,
     get_all_categories,
-    get_all_users
+    get_all_users,
 }
 

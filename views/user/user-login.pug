@@ -1,6 +1,18 @@
 extends ../layouts/main-layout.pug
 
 block styles
-
+    link(rel="stylesheet", href="/css/login.css")
 block contents
-    h1 User Login
+    main.main-container
+        .signin-form-container
+            form(action="/user/complete-signin", method="post")
+                .signin-form
+                    label(for="user_email", class="form_label") Email
+                    input(type="text", name="user_email", class="form-field", required)
+
+                    label(for="user_password", class="form_label") Password
+                    input(type="password", name="user_password", class="form-field", required)
+
+                    .form-actions
+                        button(type="submit" name="btnSubmit" class="form-button") SignIn
+                        button(type="button" name="btnCancel" class="form-button") Cancel

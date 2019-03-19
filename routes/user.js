@@ -4,7 +4,8 @@ const router = express.Router();
 const {
         ShowUserRegistration,
         ShowUserLogin,
-        RegisterUser
+        RegisterUser,
+        SignIn
      } = require('../controllers/user-controller');
 
 // Register user form
@@ -15,5 +16,8 @@ router.post('/complete-registration', RegisterUser);
 
 // Login user form
 router.get('/signin', ShowUserLogin);
+
+// Post signin details
+router.post('/complete-signin', SignIn);
 
 exports.router = router;
