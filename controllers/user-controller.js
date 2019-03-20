@@ -45,9 +45,20 @@ const ShowUserLogin = (req, res, next) => {
 }
 
 const SignIn = (req, res, next) => {
-    res
-        .status(200)
-        .redirect('/');
+
+    const {user_email, user_password} = req.body;
+    User.signIn(user_email, user_password, isSignedIn => {
+        if(isSignedIn)
+        {
+            res
+                .status(200)
+                .redirect('/');
+        }
+        else
+        {
+            res.status(400).render('error/400', {title:"Bad request"});
+        }
+    });
 }
 
 module.exports = {

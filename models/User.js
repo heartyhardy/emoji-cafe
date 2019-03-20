@@ -29,16 +29,25 @@ module.exports = class User{
         })
     }
 
-    async save(isSaved)
+    save(isSaved)
     {
         if(this.isValid)
         {
-            this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10));
-
-            const {isValid,...save_obj} = this;
-            getRepository().save_user(save_obj, (result) => {
-                isSaved(result);
-            })
+            (async() => {
+                try
+                {
+                    this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10));
+                    
+                    const {isValid,...save_obj} = this;
+                    getRepository().save_user(save_obj, (result) => {
+                        isSaved(result);
+                    })
+                }
+                catch(e)
+                {
+                    return isSaved(false);
+                }
+            })()
         }
         else throw "Cannot save: Invalid user registration";
     }
@@ -48,10 +57,27 @@ module.exports = class User{
         getRepository().get_all_users(result => users(result));
     }
 
-    static signIn(email, pass)
+    static signIn(email, password, isSignedIn)
     {
         getRepository().get_all_users(result => {
-            
+            let src_user = result.find(user => user.email.toLowerCase() === email.toLowerCase());
+            if(src_user)
+            {
+                (async() => {
+                    try{
+                        let isUserValid = await bcrypt.compare(password, src_user.password);
+                        isSignedIn(isUserValid);
+                    }
+                    catch(e)
+                    {
+                        isSignedIn(false);
+                    }
+                })()                
+            }
+            else
+            {
+                isSignedIn(false);
+            }
         })
     }
 }
