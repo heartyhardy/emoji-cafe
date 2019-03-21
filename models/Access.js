@@ -11,6 +11,12 @@ module.exports = class Access{
         access_type
     )
     {
+        const getAllTokens = () => {
+            getRepository().get_all_tokens((tokens) => {
+                this.tokens = tokens;
+            })
+        }
+
         this.tokens = [];
         this.user_id = user_id;
         this.access_type = access_type;

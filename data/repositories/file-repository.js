@@ -8,6 +8,7 @@ const db_path = path.join(root_path,process.env.FILE_DB_PATH);
 const products_filename = db_path + ".prod.txt";
 const categories_filename = db_path + ".cat.txt";
 const users_filename = db_path + ".usr.txt";
+const access_filename = db_path + "tok.txt";
 
 /*
     Save a new product
@@ -147,13 +148,66 @@ const get_all_users = (result) => {
     })
 }
 
+/*
+    Save an access token in the db
+*/
+const save_token = (access, result) => {
+    if(_.isNull(access) || _.isUndefined(access))
+    return result({saved: false});
+
+    let access_data = [];
+
+    fs.readFile(access_filename, (err, data) => {
+        if(!err && data.byteLength > 0)
+            access_data = JSON.parse(data);
+
+        access_data.push(access);
+
+        fs.writeFile(access_filename, JSON.stringify(access_data), err => {
+            if(err)
+                result({saved:false});
+            else
+                result({saved:true});
+        })
+
+    })
+}
+
+/*
+    Remove a token by userId
+*/
+const remove_token = (userId) => {
+
+}
+
+/*
+    Get all access tokens in the db
+*/
+const get_all_tokens = (result) => {
+    let tokens = [];
+
+    fs.readFile(access_filename, (err, data) => {
+        if(err)
+            return result([]);
+        if(data.byteLength > 0)
+        {
+            tokens = JSON.parse(data);
+            result(tokens);
+        }
+        else result([]);
+    })
+}
+
 
 module.exports = {
     save_product,
     save_category,
     save_user,
+    save_token,
     get_all_products,
     get_all_categories,
     get_all_users,
+    get_all_tokens,
+    remove_token,
 }
 
