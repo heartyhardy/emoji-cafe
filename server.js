@@ -22,22 +22,4 @@ app.use('/admin', admin_route.router);
 app.use('/user', user_route.router);
 app.use(PageNotFoundError);
 
-// const val = require('./util/validation');
-// const product = require('./models/Product');
-// const prod = new product(
-//     "Cheese",
-//     "A Cheese Wedge",
-//     '1',
-//     '10.95',
-//     '🧀'
-// );
-// prod.save((result)=>{
-//     console.log(result);
-
-//     product.fetch(products => {
-//         console.log(products);
-//     })
-// });
-
-
 app.listen(PORT, () => console.log(`🍕  Serving food like nobody's business on PORT: ${PORT}`));
