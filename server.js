@@ -22,4 +22,8 @@ app.use('/admin', admin_route.router);
 app.use('/user', user_route.router);
 app.use(PageNotFoundError);
 
+const Access = require('./models/Access');
+
+let access = new Access("uid","something");
+
 app.listen(PORT, () => console.log(`🍕  Serving food like nobody's business on PORT: ${PORT}`));

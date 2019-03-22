@@ -8,7 +8,7 @@ const db_path = path.join(root_path,process.env.FILE_DB_PATH);
 const products_filename = db_path + ".prod.txt";
 const categories_filename = db_path + ".cat.txt";
 const users_filename = db_path + ".usr.txt";
-const access_filename = db_path + "tok.txt";
+const access_filename = db_path + ".tok.txt";
 
 /*
     Save a new product
@@ -176,15 +176,36 @@ const save_token = (access, result) => {
 /*
     Remove a token by userId
 */
-const remove_token = (userId) => {
+const remove_token = (access, token_index, result) => {
+    let access_data = [];
 
+    fs.readFile(access_filename, (err, data) => {
+        if(!err && data.byteLength > 0)
+            access_data = JSON.parse(data);
+
+        let user_tokens = access_data.find(user_access => user_access.user_id === access.user_id).tokens;
+        user_tokens.splice(index,1);
+
+        access_data.splice(
+            access_data.findIndex(user_access => user_access.user_id === access.user_id),
+            1
+            );
+
+        fs.writeFile(access_filename, JSON.stringify(access_data), err => {
+            if(err)
+                result({deleted:false});
+            else
+                result({deleted:true});
+        })
+    })
 }
 
 /*
     Get all access tokens in the db
 */
-const get_all_tokens = (result) => {
+const get_all_tokens = (user_id, result) => {
     let tokens = [];
+    let user_tokens = [];
 
     fs.readFile(access_filename, (err, data) => {
         if(err)
@@ -192,7 +213,8 @@ const get_all_tokens = (result) => {
         if(data.byteLength > 0)
         {
             tokens = JSON.parse(data);
-            result(tokens);
+            user_tokens = tokens.find(token => token.user_id === user_id);
+            result(user_tokens);
         }
         else result([]);
     })
