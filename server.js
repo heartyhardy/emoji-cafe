@@ -25,5 +25,12 @@ app.use(PageNotFoundError);
 const Access = require('./models/Access');
 
 let access = new Access("uid","something");
+// (async () => {
+//     let tokens = await access.fetch();
+//     console.log(tokens);
+// })();
+access.saveToken();
+
+//access.getallTokens(result => console.log);
 
 app.listen(PORT, () => console.log(`🍕  Serving food like nobody's business on PORT: ${PORT}`));

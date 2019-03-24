@@ -203,7 +203,28 @@ const remove_token = (access, token_index, result) => {
 /*
     Get all access tokens in the db
 */
-const get_all_tokens = (user_id, result) => {
+const get_all_tokens = () => {
+    
+    return new Promise((resolve, reject) => {
+        let tokens = [];
+
+        fs.readFile(access_filename, (err, data) => {
+            if(err)
+                reject([]);
+            if(data.byteLength > 0)
+            {
+                tokens = JSON.parse(data);
+                resolve(tokens);
+            }
+            else reject([]);
+        })
+    })
+}
+
+/*
+    Get access tokens of the specified user_id
+*/
+const get_tokens_by_id = (user_id, result) => {
     let tokens = [];
     let user_tokens = [];
 
@@ -213,7 +234,7 @@ const get_all_tokens = (user_id, result) => {
         if(data.byteLength > 0)
         {
             tokens = JSON.parse(data);
-            user_tokens = tokens.find(token => token.user_id === user_id);
+            user_tokens = tokens.filter(user => user.user_id === user_id);
             result(user_tokens);
         }
         else result([]);
@@ -230,6 +251,7 @@ module.exports = {
     get_all_categories,
     get_all_users,
     get_all_tokens,
+    get_tokens_by_id,
     remove_token,
 }
 
