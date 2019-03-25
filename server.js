@@ -16,7 +16,7 @@ app.set('view engine', 'pug');
 app.set('views', 'views');
 
 app.use(express.static('public'));
-app.use(parser.urlencoded({extended:false}));
+app.use(parser.urlencoded({ extended: false }));
 app.use(shop_route.router);
 app.use('/admin', admin_route.router);
 app.use('/user', user_route.router);
@@ -24,15 +24,38 @@ app.use(PageNotFoundError);
 
 const Access = require('./models/Access');
 
-let access = new Access("uid","something");
+let access = new Access("uid", "something");
 // (async () => {
-//     let tokens = await access.fetch();
-//     console.log(tokens);
+//     try {
+//         let tokens = await access.fetch();
+//         console.log(tokens);
+//     }catch(e){
+//         console.log(e);
+//     }
+
 // })();
 
-(async() => {
-    let saved = await access.save();
-    console.log(saved);
+// (async() => {
+//     let saved = await access.save();
+//     console.log(saved);
+// })();
+
+// (async () => {
+//     try {
+//         let tokens = await access.fetch_by_id('uid');
+//         console.log(tokens);
+//     } catch (e) {
+//         console.log(e);
+//     }
+
+// })();
+
+(async () => {
+    try{
+        let x = await access.assign('uid');
+    }catch(e){
+
+    }
 })();
 
 //access.getallTokens(result => console.log);

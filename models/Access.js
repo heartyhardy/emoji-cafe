@@ -28,10 +28,10 @@ module.exports = class Access {
                 SECRET_KEY,
                 { expiresIn: 60 * 60, algorithm: 'HS256' }
             );
-    
+
             this.tokens.push(token);
             const { role, ...save_obj } = this;
-    
+
             getRepository().save_token(save_obj)
                 .then(result => {
                     resolve(result);
@@ -41,15 +41,56 @@ module.exports = class Access {
     }
 
     fetch() {
-        return getRepository().get_all_tokens().then((data) => {
-            return new Promise((resolve, reject) => {
-                if (data) {
+        return new Promise((resolve, reject) => {
+            return getRepository().get_all_tokens().then((data) => {
+                if (!data) {
                     this.getTokens().push(...data);
                     resolve(this.getTokens());
                 }
+                else reject([]);
+            }).catch(
+                err => reject(err)
+            )
+        })
+    }
 
-                else reject();
+    fetch_by_id(_id) {
+        return new Promise((resolve, reject) => {
+            return getRepository().get_tokens_by_id(_id).then((data) => {
+                if (data) {
+                    this.getTokens().length = 0;
+                    this.getTokens().push(...data);
+                    resolve(this.getTokens());
+                }
+                else reject([]);
             })
-        }).catch(console.log);
+                .catch(err => reject(err))
+        })
+    }
+
+    assign(_id) {
+        //fetch a token if exists for the current user
+        // if not generate
+        return new Promise((resolve, reject) => {
+            this.fetch_by_id(_id)
+                .then(data => {
+                    let access_tokens = data;
+                    let decoded_token = null;
+                    let error_type = null;
+
+                    for (let user of access_tokens) {
+                        for (let token of user.tokens) {
+                            jwt.verify(token, SECRET_KEY, (err, decoded) => {
+                                if (err) {
+                                    error_type = err.name;
+                                }
+                                else decoded_token = decoded;
+                            })
+                        }
+                    }
+                    resolve();
+                })
+                .catch(err => reject(err));
+        })
     }
 }
