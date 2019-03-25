@@ -26,7 +26,7 @@ module.exports = class Access {
                 role: this.role
             },
                 SECRET_KEY,
-                { expiresIn: 60 * 60, algorithm: 'HS256' }
+                { expiresIn: 1 * 60, algorithm: 'HS256' }
             );
 
             this.tokens.push(token);
@@ -68,6 +68,31 @@ module.exports = class Access {
         })
     }
 
+    verify(_token) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(_token, SECRET_KEY, (err, decoded_token) => {
+
+                if (err) {
+                    switch (err.name) {
+                        case 'TokenExpiredError':
+                            reject({ expired: true, error: true, decoded: null });
+                            break;
+
+                        case 'JsonWebTokenError':
+                            reject({ expired: false, error: true, decoded: null });
+                            break;
+
+                        default:
+                            reject({ expired: false, error: true, decoded: null });
+                    }
+                }
+                else {
+                    resolve({ expired: false, error: false, decoded: decoded_token });
+                }
+            })
+        })
+    }
+
     assign(_id) {
         //fetch a token if exists for the current user
         // if not generate
@@ -75,22 +100,39 @@ module.exports = class Access {
             this.fetch_by_id(_id)
                 .then(data => {
                     let access_tokens = data;
-                    let decoded_token = null;
-                    let error_type = null;
+                    let payload = null;
 
                     for (let user of access_tokens) {
                         for (let token of user.tokens) {
-                            jwt.verify(token, SECRET_KEY, (err, decoded) => {
-                                if (err) {
-                                    error_type = err.name;
+                            (async () => {
+                                try {
+                                    payload = await this.verify(token);
+                                    resolve({payload});
                                 }
-                                else decoded_token = decoded;
-                            })
+                                catch (e) {
+                                    payload = e;
+
+                                    if(payload.expired)
+                                    {
+                                        reject({error:"expired"});
+                                    }
+                                    else
+                                    {
+                                        reject({error:"invalidToken"});
+                                    }
+                                    
+                                }
+                            })();
                         }
                     }
-                    resolve();
                 })
                 .catch(err => reject(err));
         })
     }
+
+    clean()
+    {
+        // clean up expired tokens
+    }
+
 }

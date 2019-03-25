@@ -53,8 +53,9 @@ let access = new Access("uid", "something");
 (async () => {
     try{
         let x = await access.assign('uid');
+        console.log(x.payload.decoded);
     }catch(e){
-
+        console.log(e);
     }
 })();
 
