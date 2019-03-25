@@ -151,26 +151,29 @@ const get_all_users = (result) => {
 /*
     Save an access token in the db
 */
-const save_token = (access, result) => {
-    if(_.isNull(access) || _.isUndefined(access))
-    return result({saved: false});
+const save_token = (access) => {
 
-    let access_data = [];
-
-    fs.readFile(access_filename, (err, data) => {
-        if(!err && data.byteLength > 0)
-            access_data = JSON.parse(data);
-
-        access_data.push(access);
-
-        fs.writeFile(access_filename, JSON.stringify(access_data), err => {
-            if(err)
-                result({saved:false});
-            else
-                result({saved:true});
+    return new Promise((resolve, reject) => {
+        if(_.isNull(access) || _.isUndefined(access))
+            reject({saved:false});
+    
+        let access_data = [];
+    
+        fs.readFile(access_filename, (err, data) => {
+            if(!err && data.byteLength > 0)
+                access_data = JSON.parse(data);
+    
+            access_data.push(access);
+    
+            fs.writeFile(access_filename, JSON.stringify(access_data), err => {
+                if(err)
+                    reject({saved:false});
+                else
+                    resolve({saved:true});
+            })
+    
         })
-
-    })
+    });
 }
 
 /*

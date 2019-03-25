@@ -17,26 +17,39 @@ module.exports = class Access {
         this.getTokens = function () {
             return this.tokens;
         }
-        this.saveToken = function () {
-            this.fetch().then(data => {
-                console.log(this.tokens);
-            })
-        }
+    }
+
+    save() {
+        return new Promise((resolve, reject) => {
+            let token = jwt.sign({
+                user_id: this.user_id,
+                role: this.role
+            },
+                SECRET_KEY,
+                { expiresIn: 60 * 60, algorithm: 'HS256' }
+            );
+    
+            this.tokens.push(token);
+            const { role, ...save_obj } = this;
+    
+            getRepository().save_token(save_obj)
+                .then(result => {
+                    resolve(result);
+                })
+                .catch(err => reject(err));
+        })
     }
 
     fetch() {
         return getRepository().get_all_tokens().then((data) => {
             return new Promise((resolve, reject) => {
-                if (data)
-                {
+                if (data) {
                     this.getTokens().push(...data);
                     resolve(this.getTokens());
                 }
-                    
+
                 else reject();
             })
         }).catch(console.log);
     }
-
-    
 }

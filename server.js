@@ -29,7 +29,11 @@ let access = new Access("uid","something");
 //     let tokens = await access.fetch();
 //     console.log(tokens);
 // })();
-access.saveToken();
+
+(async() => {
+    let saved = await access.save();
+    console.log(saved);
+})();
 
 //access.getallTokens(result => console.log);
 
