@@ -68,7 +68,10 @@ module.exports = class Access {
         })
     }
 
-    verify(_token) {
+    /*
+        Used in assigning tokens
+    */
+    static verify(_token) {
         return new Promise((resolve, reject) => {
             jwt.verify(_token, SECRET_KEY, (err, decoded_token) => {
 
@@ -93,6 +96,34 @@ module.exports = class Access {
         })
     }
 
+    /*
+        Used in cleaning expired tokens
+    */
+    static verify_ex(_token) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(_token, SECRET_KEY, (err, decoded_token) => {
+
+                if (err) {
+                    switch (err.name) {
+                        case 'TokenExpiredError':
+                            resolve({ expired: true, error: true, decoded: null });
+                            break;
+
+                        case 'JsonWebTokenError':
+                            resolve({ expired: false, error: true, decoded: null });
+                            break;
+
+                        default:
+                            resolve({ expired: false, error: true, decoded: null });
+                    }
+                }
+                else {
+                    resolve({ expired: false, error: false, decoded: decoded_token });
+                }
+            })
+        })
+    }
+
     assign(_id) {
         //fetch a token if exists for the current user
         // if not generate
@@ -106,21 +137,19 @@ module.exports = class Access {
                         for (let token of user.tokens) {
                             (async () => {
                                 try {
-                                    payload = await this.verify(token);
-                                    resolve({payload});
+                                    payload = await Access.verify(token);
+                                    resolve({ payload });
                                 }
                                 catch (e) {
                                     payload = e;
 
-                                    if(payload.expired)
-                                    {
-                                        reject({error:"expired"});
+                                    if (payload.expired) {
+                                        reject({ error: "expired" });
                                     }
-                                    else
-                                    {
-                                        reject({error:"invalidToken"});
+                                    else {
+                                        reject({ error: "invalidToken" });
                                     }
-                                    
+
                                 }
                             })();
                         }
@@ -130,9 +159,47 @@ module.exports = class Access {
         })
     }
 
-    clean()
-    {
-        // clean up expired tokens
+    /*
+        Clean all expired and invalid tokens
+    */
+    static clean() {
+        const get_tokens = async () => {
+            return await getRepository().get_all_tokens();
+        }
+
+        const verify_all = async tokens => {
+            const token_list = await get_tokens();
+
+            let result = await verify_all_tokens(token_list);
+            console.log(result);
+            
+        }
+
+        const verify_token = async token => {
+            return await Promise.all(token.map(async(t,i) => {
+                let result = await this.verify_ex(t);
+                if(result.err)
+                    result.index = i;
+                return result;
+            }
+            ));
+        }
+
+        const verify_all_tokens = async tokens => {
+            return await Promise.all(tokens.map(async(u, i) => {
+                let verified = await verify_token(u.tokens);
+                let token_user = u;
+                
+                for(let err_token=0; err_token< verified.length; err_token++)
+                {
+                    if(verified[err_token].index != undefined)
+                        token_user.tokens.splice(verified[err_token].index);
+                }
+                return token_user;
+            }));
+        }
+
+        verify_all();
     }
 
 }

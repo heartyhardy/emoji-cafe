@@ -50,14 +50,25 @@ let access = new Access("uid", "something");
 
 // })();
 
-(async () => {
-    try{
-        let x = await access.assign('uid');
-        console.log(x.payload.decoded);
-    }catch(e){
-        console.log(e);
-    }
-})();
+// (async () => {
+//     try{
+//         let x = await access.assign('uid');
+//         console.log(x.payload.decoded);
+//     }catch(e){
+//         console.log(e);
+//     }
+// })();
+
+// (async()=> {
+//     try{
+//         let x = await Access.clean();
+//         console.log(x);
+//     }
+//     catch(e){
+//         console.log("error",e);
+//     }
+// })();
+Access.clean();
 
 //access.getallTokens(result => console.log);
 
