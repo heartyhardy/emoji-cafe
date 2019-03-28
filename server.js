@@ -24,7 +24,7 @@ app.use(PageNotFoundError);
 
 const Access = require('./models/Access');
 
-let access = new Access("uid", "something");
+let access = new Access("xdx", "something new");
 // (async () => {
 //     try {
 //         let tokens = await access.fetch();
@@ -50,14 +50,14 @@ let access = new Access("uid", "something");
 
 // })();
 
-// (async () => {
-//     try{
-//         let x = await access.assign('uid');
-//         console.log(x.payload.decoded);
-//     }catch(e){
-//         console.log(e);
-//     }
-// })();
+(async () => {
+    try{
+        let x = await access.assign();
+        console.log(x);
+    }catch(e){
+        console.log(e);
+    }
+})();
 
 // (async()=> {
 //     try{
@@ -68,7 +68,7 @@ let access = new Access("uid", "something");
 //         console.log("error",e);
 //     }
 // })();
-Access.clean();
+//Access.clean();
 
 //access.getallTokens(result => console.log);
 

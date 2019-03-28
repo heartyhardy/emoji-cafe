@@ -34,6 +34,8 @@ module.exports = class Access {
 
             getRepository().save_token(save_obj)
                 .then(result => {
+                    if(result.saved)
+                        result.token = token;
                     resolve(result);
                 })
                 .catch(err => reject(err));
@@ -124,14 +126,21 @@ module.exports = class Access {
         })
     }
 
-    assign(_id) {
+    assign() {
         //fetch a token if exists for the current user
         // if not generate
         return new Promise((resolve, reject) => {
-            this.fetch_by_id(_id)
+            this.fetch_by_id(this.user_id)
                 .then(data => {
                     let access_tokens = data;
                     let payload = null;
+
+                    if(data.length === 0)
+                    {
+                        this.save().then((saved) => {
+                            resolve(saved);
+                        })
+                    }
 
                     for (let user of access_tokens) {
                         for (let token of user.tokens) {
@@ -155,7 +164,14 @@ module.exports = class Access {
                         }
                     }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    if(err.length===0)
+                    {
+                        this.save().then((saved) => {
+                            resolve(saved);
+                        })
+                    }
+                });
         })
     }
 
@@ -170,15 +186,13 @@ module.exports = class Access {
         const verify_all = async tokens => {
             const token_list = await get_tokens();
 
-            let result = await verify_all_tokens(token_list);
-            console.log(result);
-            
+            let result = await verify_all_tokens(token_list);            
         }
 
         const verify_token = async token => {
             return await Promise.all(token.map(async(t,i) => {
                 let result = await this.verify_ex(t);
-                if(result.err)
+                if(result.error)
                     result.index = i;
                 return result;
             }
